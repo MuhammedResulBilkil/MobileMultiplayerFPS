@@ -844,7 +844,7 @@ GameObject:
   - component: {fileID: 1383579368150154430}
   - component: {fileID: 2900006777261945879}
   m_Layer: 5
-  m_Name: JoinRoomButton
+  m_Name: Button_JoinRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
