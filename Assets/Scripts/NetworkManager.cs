@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -19,6 +21,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
     [Header("Create Room UI Panel")] 
     [SerializeField] private GameObject _createRoomUIPanel;
+    [SerializeField] private TMP_InputField _roomNameInputField;
+    [SerializeField] private TMP_InputField _maxPlayerInputField;
     
     [Header("Inside Room UI Panel")] 
     [SerializeField] private GameObject _insideRoomUIPanel;
@@ -74,6 +78,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnCreateRoomButtonClicked()
+    {
+        string roomName = _roomNameInputField.text;
+
+        if (string.IsNullOrEmpty(roomName))
+            roomName = $"Room {Random.Range(0, 100000)}";
+        
+        byte maxPlayerCount = (byte)int.Parse(_maxPlayerInputField.text);
+
+        // Just In Case
+        if (maxPlayerCount == 0)
+            maxPlayerCount = 1;
+        
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = maxPlayerCount;
+
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
+    }
+
+    public void OnCancelButtonClicked()
+    {
+        ActivatePanel(_gameOptionsUIPanel);
+    }
+
     #endregion
 
     #region Photon CallBacks
@@ -88,6 +116,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} is connected to Photon Server!");
         
         ActivatePanel(_gameOptionsUIPanel);
+    }
+
+    public override void OnCreatedRoom()
+    {
+        Debug.LogFormat($"{PhotonNetwork.CurrentRoom.Name} is created!");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} joined to {PhotonNetwork.CurrentRoom.Name}!");
+        
+        ActivatePanel(_insideRoomUIPanel);
     }
 
     #endregion
