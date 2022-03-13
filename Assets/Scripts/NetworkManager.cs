@@ -34,6 +34,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _joinRandomRoomUIPanel;
 
     private List<GameObject> _panels = new List<GameObject>();
+    private Dictionary<string, RoomInfo> _cachedRoomList = new Dictionary<string, RoomInfo>();
 
     private void Awake()
     {
@@ -102,6 +103,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(_gameOptionsUIPanel);
     }
 
+    public void OnShowRoomListButtonClicked()
+    {
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
+        
+        ActivatePanel(_roomListUIPanel);
+    }
+
     #endregion
 
     #region Photon CallBacks
@@ -128,6 +137,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} joined to {PhotonNetwork.CurrentRoom.Name}!");
         
         ActivatePanel(_insideRoomUIPanel);
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo roomInfo in roomList)
+        {
+            if (!roomInfo.IsOpen || !roomInfo.IsVisible || roomInfo.RemovedFromList)
+                if (_cachedRoomList.ContainsKey(roomInfo.Name))
+                    _cachedRoomList.Remove(roomInfo.Name);
+            
+            //_cachedRoomList[roomInfo.Name] = roomInfo;
+            _cachedRoomList.Add(roomInfo.Name, roomInfo);
+            
+            Debug.LogFormat($"In {PhotonNetwork.CurrentLobby.Name} Lobby - Room Name = {roomInfo.Name}");
+        }
+           
     }
 
     #endregion
