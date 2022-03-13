@@ -115,6 +115,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(_roomListUIPanel);
     }
 
+    public void OnBackButtonClicked()
+    {
+        if (PhotonNetwork.InLobby)
+            PhotonNetwork.LeaveLobby();
+        
+        ActivatePanel(_gameOptionsUIPanel);
+    }
+
     #endregion
 
     #region Photon CallBacks
@@ -180,7 +188,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             _roomListGameObjects.Add(roomInfo.Name, roomListEntryGameObject);
         }
-           
+    }
+
+    public override void OnLeftLobby()
+    {
+        Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} left lobby!");
+        
+        ClearRoomListView();
+        _cachedRoomList.Clear();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        string currentLobbyName = PhotonNetwork.CurrentLobby.Name;
+        if (string.IsNullOrEmpty(currentLobbyName))
+            currentLobbyName = "Default";
+        
+        Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} is joined to {currentLobbyName} lobby!");
     }
 
     #endregion
