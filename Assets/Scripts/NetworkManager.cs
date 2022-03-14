@@ -55,6 +55,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         _panels.Add(_insideRoomUIPanel);
         _panels.Add(_roomListUIPanel);
         _panels.Add(_joinRandomRoomUIPanel);
+        
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
     
     // Start is called before the first frame update
@@ -138,6 +140,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(_joinRandomRoomUIPanel);
 
         PhotonNetwork.JoinRandomRoom();
+    }
+
+    public void OnStartGameButtonClicked()
+    {
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("GameScene");
     }
 
     #endregion
