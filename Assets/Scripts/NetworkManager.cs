@@ -133,6 +133,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public void OnJoinRandomRoomButtonClicked()
+    {
+        ActivatePanel(_joinRandomRoomUIPanel);
+
+        PhotonNetwork.JoinRandomRoom();
+    }
+
     #endregion
 
     #region Photon CallBacks
@@ -180,6 +187,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             _playerListGameObjects.Add(player.ActorNumber, playerListGameObject);
         }
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.LogFormat($"OnJoinRandomRoomFailed! Message: {message}");
+
+        string roomName = $"Room {Random.Range(0, 100000)}";
+        
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 20;
+
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
