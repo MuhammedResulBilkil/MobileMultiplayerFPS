@@ -30,6 +30,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI _roomInfoText;
     [SerializeField] private GameObject _playerListPrefab;
     [SerializeField] private GameObject _playerListContent;
+    [SerializeField] private GameObject _startGameButton;
 
     [Header("Room List UI Panel")] 
     [SerializeField] private GameObject _roomListUIPanel;
@@ -42,7 +43,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private List<GameObject> _panels = new List<GameObject>();
     private Dictionary<string, RoomInfo> _cachedRoomList = new Dictionary<string, RoomInfo>();
     private Dictionary<string, GameObject> _roomListGameObjects = new Dictionary<string, GameObject>();
-    
+    private Dictionary<int, GameObject> _playerListGameObjects = new Dictionary<int, GameObject>();
+
     #region Unity Methods
 
     private void Awake()
@@ -126,6 +128,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(_gameOptionsUIPanel);
     }
 
+    public void OnLeaveGameButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
     #endregion
 
     #region Photon CallBacks
@@ -150,8 +157,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} joined to {PhotonNetwork.CurrentRoom.Name}!");
-        
         ActivatePanel(_insideRoomUIPanel);
+
+        _startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
 
         _roomInfoText.text =
             $"Room Name: {PhotonNetwork.CurrentRoom.Name} Players/Max.Players: {PhotonNetwork.CurrentRoom.PlayerCount} / {PhotonNetwork.CurrentRoom.MaxPlayers}";
@@ -169,7 +177,51 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(true);
             else
                 playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
+
+            _playerListGameObjects.Add(player.ActorNumber, playerListGameObject);
         }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        //Update Room Info Text
+        _roomInfoText.text =
+            $"Room Name: {PhotonNetwork.CurrentRoom.Name} Players/Max.Players: {PhotonNetwork.CurrentRoom.PlayerCount} / {PhotonNetwork.CurrentRoom.MaxPlayers}";
+        
+        GameObject playerListGameObject = Instantiate(_playerListPrefab, _playerListContent.transform);
+        playerListGameObject.transform.localScale = Vector3.one;
+
+        playerListGameObject.transform.Find("Text_PlayerName").GetComponent<TextMeshProUGUI>().text =
+            $"{newPlayer.NickName}";
+            
+        if (newPlayer.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(true);
+        else
+            playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
+
+        _playerListGameObjects.Add(newPlayer.ActorNumber, playerListGameObject);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        //Update Room Info Text
+        _roomInfoText.text =
+            $"Room Name: {PhotonNetwork.CurrentRoom.Name} Players/Max.Players: {PhotonNetwork.CurrentRoom.PlayerCount} / {PhotonNetwork.CurrentRoom.MaxPlayers}";
+        
+        Destroy(_playerListGameObjects[otherPlayer.ActorNumber].gameObject);
+        _playerListGameObjects.Remove(otherPlayer.ActorNumber);
+        
+        _startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
+    }
+
+    public override void OnLeftRoom()
+    {
+        ActivatePanel(_gameOptionsUIPanel);
+
+        foreach (GameObject playerListGameObject in _playerListGameObjects.Values)
+            Destroy(playerListGameObject);
+        
+        _playerListGameObjects.Clear();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -234,6 +286,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void ActivatePanel(GameObject panelToBeActivated)
     {
+        if (panelToBeActivated == null) return;
+        
         string panelToBeActivatedName = panelToBeActivated.name;
 
         foreach (GameObject panel in _panels)

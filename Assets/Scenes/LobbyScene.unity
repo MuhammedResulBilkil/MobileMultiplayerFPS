@@ -1322,8 +1322,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 902790310}
+        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
         m_MethodName: OnLeaveGameButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -3768,6 +3768,7 @@ MonoBehaviour:
   _roomInfoText: {fileID: 1123050772}
   _playerListPrefab: {fileID: 1252797748048109091, guid: 5dc44bfa7a0d258489acbcd2b912d338, type: 3}
   _playerListContent: {fileID: 1396198818}
+  _startGameButton: {fileID: 503160507}
   _roomListUIPanel: {fileID: 2010485768}
   _roomListParentGameObject: {fileID: 505941761}
   _roomListEntryPrefab: {fileID: 841278376669109242, guid: 1b50ba566761f6c42bf8b3c775911a8d, type: 3}
@@ -7074,7 +7075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1760134790
 RectTransform:
   m_ObjectHideFlags: 0
