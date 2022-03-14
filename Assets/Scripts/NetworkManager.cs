@@ -27,6 +27,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
     [Header("Inside Room UI Panel")] 
     [SerializeField] private GameObject _insideRoomUIPanel;
+    [SerializeField] private TextMeshProUGUI _roomInfoText;
+    [SerializeField] private GameObject _playerListPrefab;
+    [SerializeField] private GameObject _playerListContent;
 
     [Header("Room List UI Panel")] 
     [SerializeField] private GameObject _roomListUIPanel;
@@ -149,6 +152,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogFormat($"{PhotonNetwork.LocalPlayer.NickName} joined to {PhotonNetwork.CurrentRoom.Name}!");
         
         ActivatePanel(_insideRoomUIPanel);
+
+        _roomInfoText.text =
+            $"Room Name: {PhotonNetwork.CurrentRoom.Name} Players/Max.Players: {PhotonNetwork.CurrentRoom.PlayerCount} / {PhotonNetwork.CurrentRoom.MaxPlayers}";
+        
+        //Instantiate Player List GameObjects
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject playerListGameObject = Instantiate(_playerListPrefab, _playerListContent.transform);
+            playerListGameObject.transform.localScale = Vector3.one;
+
+            playerListGameObject.transform.Find("Text_PlayerName").GetComponent<TextMeshProUGUI>().text =
+                $"{player.NickName}";
+            
+            if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(true);
+            else
+                playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
+        }
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
