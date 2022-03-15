@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
@@ -16,6 +17,7 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
     private PlayerMovementController _playerMovementController;
     private RigidbodyFirstPersonController _rigidbodyFirstPersonController;
     private Animator _animator;
+    private Shooting _shooting;
     
     private static readonly int IsSoldier = Animator.StringToHash("IsSoldier");
 
@@ -24,6 +26,7 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
         _playerMovementController = GetComponent<PlayerMovementController>();
         _rigidbodyFirstPersonController = GetComponent<RigidbodyFirstPersonController>();
         _animator = GetComponent<Animator>();
+        _shooting = GetComponent<Shooting>();
     }
 
     private void Start()
@@ -45,6 +48,7 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
             _cameraGameObject.SetActive(true);
 
             _animator.SetBool(IsSoldier, false);
+            playerUIGameObject.transform.Find("FireButton").GetComponent<Button>().onClick.AddListener(() => _shooting.Fire());
         }
         else
         {
