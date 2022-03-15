@@ -9,19 +9,8 @@ public class PlayerMovementController : MonoBehaviour
     public FixedTouchField fixedTouchField;
     public Joystick joystick;
     
-    private RigidbodyFirstPersonController _rigidbodyFirstPersonController;
-
-    private void Awake()
-    {
-        _rigidbodyFirstPersonController = GetComponent<RigidbodyFirstPersonController>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    [SerializeField] private RigidbodyFirstPersonController _rigidbodyFirstPersonController;
+    
     // Update is called once per frame
     void Update()
     {
