@@ -89,6 +89,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
+        public Vector2 joystickInputAxis;
+
 
         public Vector3 Velocity
         {
@@ -128,7 +130,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
-            RotateView();
+            //RotateView();
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
@@ -214,8 +216,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
             Vector2 input = new Vector2
                 {
-                    x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                    y = CrossPlatformInputManager.GetAxis("Vertical")
+                    x = joystickInputAxis.x,
+                    y = joystickInputAxis.y
                 };
 			movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
