@@ -33,7 +33,7 @@ public class PlayerMovementController : MonoBehaviour
         _animator.SetFloat(Horizontal, joystick.Horizontal);
         _animator.SetFloat(Vertical, joystick.Vertical);
 
-        if (Mathf.Abs(joystick.Horizontal) > 0.9f || Mathf.Abs(joystick.Vertical) > 0.9f)
+        if (Mathf.Abs(joystick.Horizontal) > 0.7f || Mathf.Abs(joystick.Vertical) > 0.7f)
         {
             //Running
             _rigidbodyFirstPersonController.movementSettings.ForwardSpeed = 16f;

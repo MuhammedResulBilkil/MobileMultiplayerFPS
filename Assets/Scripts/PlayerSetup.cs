@@ -15,11 +15,15 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
 
     private PlayerMovementController _playerMovementController;
     private RigidbodyFirstPersonController _rigidbodyFirstPersonController;
+    private Animator _animator;
+    
+    private static readonly int IsSoldier = Animator.StringToHash("IsSoldier");
 
     private void Awake()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
         _rigidbodyFirstPersonController = GetComponent<RigidbodyFirstPersonController>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -39,6 +43,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
             _playerMovementController.joystick = playerUIGameObject.transform.Find("Fixed Joystick").GetComponent<Joystick>();
             _playerMovementController.fixedTouchField = playerUIGameObject.transform.Find("RotationTouchField").GetComponent<FixedTouchField>();
             _cameraGameObject.SetActive(true);
+
+            _animator.SetBool(IsSoldier, false);
         }
         else
         {
@@ -52,6 +58,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
             _playerMovementController.enabled = false;
             _rigidbodyFirstPersonController.enabled = false;
             _cameraGameObject.SetActive(false);
+            
+            _animator.SetBool(IsSoldier, true);
         }
     }
 }
