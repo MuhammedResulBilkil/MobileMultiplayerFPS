@@ -1309,7 +1309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5693991201251847446
 Transform:
   m_ObjectHideFlags: 0
@@ -1397,6 +1397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4575793812246410522}
+  - component: {fileID: 2777023122037623155}
   - component: {fileID: 4575793812246410523}
   - component: {fileID: 4575793812246410520}
   - component: {fileID: 4575793812246410521}
@@ -1430,6 +1431,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2777023122037623155
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4575793812246410517}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 5f475ff968ca7d743838644136808068, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6cba1fbc60304ef468e427e45d53650e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!136 &4575793812246410523
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2722,7 +2742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6382794404180944772
 Transform:
   m_ObjectHideFlags: 0
@@ -4048,7 +4068,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9167698467239561521
 Transform:
   m_ObjectHideFlags: 0
@@ -4182,7 +4202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9167698467239561523
 Transform:
   m_ObjectHideFlags: 0
