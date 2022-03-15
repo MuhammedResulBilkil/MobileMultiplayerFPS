@@ -1409,7 +1409,7 @@ GameObject:
   - component: {fileID: 2322728993617590054}
   m_Layer: 0
   m_Name: PlayerPrefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1672,6 +1672,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fpsCamera: {fileID: 2036734903}
   _hitEffect: {fileID: 1427219259760927666, guid: ab32e7014b78f8c45bcd34752af5b44c, type: 3}
+  _damageAmount: 20
+  _maxHealth: 100
+  _healthBar: {fileID: 0}
 --- !u!1 &4575793813935002959
 GameObject:
   m_ObjectHideFlags: 0
